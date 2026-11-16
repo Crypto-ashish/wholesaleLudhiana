@@ -1,0 +1,6 @@
+# Local development / tests only. Admin password for this hash: test-admin-password-123
+ADMIN_PASSWORD_HASH=scrypt:16384:8:1:REPLACE_WITH_OUTPUT_OF_npm_run_hash-password
+RAZORPAY_KEY_ID=rzp_test_E2Elocal000
+RAZORPAY_KEY_SECRET=e2e_local_test_secret
+RAZORPAY_WEBHOOK_SECRET=e2e_local_webhook_secret
+RAZORPAY_API_BASE=http://127.0.0.1:8799

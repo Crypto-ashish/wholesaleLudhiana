@@ -1,0 +1,38 @@
+{
+  "name": "wholesale-ludhiana",
+  "main": "src/index.js",
+  "compatibility_date": "2025-01-01",
+  // Configuration lives in the Cloudflare dashboard (Worker → Settings →
+  // Variables and Secrets) and is kept across deploys (keep_vars):
+  //   Secrets:   ADMIN_PASSWORD_HASH, RAZORPAY_KEY_SECRET, RAZORPAY_WEBHOOK_SECRET
+  //   Variables: RAZORPAY_KEY_ID (rzp_live_… — publishable), SITE_URL (e.g. https://www.wholesaleludhiana.com)
+  // Nothing set = online payment is hidden at checkout (COD / bank transfer / WhatsApp
+  // still work) and the site uses its own address for canonical links.
+  "keep_vars": true,
+  "vars": {
+    "ADMIN_USERNAME": "admin"
+  },
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      // No database_id on purpose: wrangler finds the "wholesaleludhiana" database
+      // by name in whichever Cloudflare account it deploys to (and creates it
+      // on the first deploy if it doesn't exist yet).
+      "database_name": "wholesaleludhiana",
+      "migrations_dir": "migrations"
+    }
+  ],
+  // Abuse protection for checkout, enquiries and logins:
+  // at most 10 requests per minute per visitor IP for each endpoint.
+  "ratelimits": [
+    { "name": "API_LIMITER", "namespace_id": "2002", "simple": { "limit": 10, "period": 60 } }
+  ],
+  // Exposes the deployment id, used to cache-bust CSS/JS URLs.
+  "version_metadata": { "binding": "CF_VERSION_METADATA" },
+  "observability": { "enabled": true }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "wholesale-ludhiana",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Wholesale Ludhiana \u2014 multi-category wholesale store, bulk order calculator and admin on Cloudflare Workers + D1",
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --port 8787",
+    "db:migrate:local": "wrangler d1 migrations apply wholesaleludhiana --local",
+    "db:migrate:remote": "wrangler d1 migrations apply wholesaleludhiana --remote",
+    "hash-password": "node scripts/hash-password.mjs",
+    "deploy": "wrangler deploy && wrangler d1 migrations apply wholesaleludhiana --remote",
+    "test": "npm run test:unit && npm run test:e2e",
+    "test:unit": "node --no-warnings --test tests/unit/*.test.js",
+    "test:e2e": "playwright test --trace off"
+  },
+  "dependencies": {
+    "@noble/hashes": "1.8.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "wrangler": "4.156.0"
+  }
+}
